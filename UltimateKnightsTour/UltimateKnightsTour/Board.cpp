@@ -12,10 +12,17 @@ Board::Board(int x, int y)
 	//Assign sizes
 	xSize = x, ySize = y;
 
-	cout << "Board size:  " << xSize << "/" << ySize <<" \n";
+	cout << "Board size:  " << xSize << "/" << ySize << " \n";
 
 
+	//Initialize a 2d array of the board
+	InitializeTileMap();
 
+	//Check bounds and create connection between tiles
+	CreateConnections();
+
+	//Display the board
+	DisplayBoard();
 
 
 }
@@ -24,3 +31,130 @@ Board::Board(int x, int y)
 Board::~Board()
 {
 }
+
+void Board::InitializeTileMap()
+{
+	//Initialize tileMap of board
+	tileMap = new Tile*[xSize]();
+	for (int y = 0; y < ySize; ++y) {
+		tileMap[y] = new Tile[xSize]();
+	}
+}
+
+void Board::CreateConnections()
+{
+	//Create connections for each tile
+	for (size_t x = 0; x < xSize; x++)
+	{
+		for (size_t y = 0; y < ySize; y++)
+		{
+			int options = 0;
+
+			//Check for amount of connections
+			if (CheckBounds(-2, -1, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(-1, -2, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(-2, 1, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(-1, 2, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(+1, 2, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(+2, 1, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(+2, -1, x, y) == true) {
+				options++;
+			}
+			if (CheckBounds(+1, -2, x, y) == true) {
+
+				options++;
+			}
+
+			//Initialize connections based on amount
+			tileMap[x][y].connectedTiles.resize(options);
+
+			options = 0;
+
+			//Create an increment to help assign connectedTiles 
+			int increment = 0;
+
+			//Fill connections with tiles
+			if (CheckBounds(-2, -1, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[-2 + x][-1 + y];
+				increment++;
+			}
+			if (CheckBounds(-2, 1, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[-2 + x][1 + y];
+				increment++;
+			}
+			if (CheckBounds(-1, -2, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[-1 + x][-2 + y];
+				increment++;
+			}
+
+			if (CheckBounds(-1, 2, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[-1 + x][2 + y];
+				increment++;
+			}
+			if (CheckBounds(1, 2, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[1 + x][2 + y];
+				increment++;
+			}
+			if (CheckBounds(2, 1, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[2 + x][1 + y];
+				increment++;
+			}
+			if (CheckBounds(2, -1, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[2 + x][-1 + y];
+				increment++;
+			}
+			if (CheckBounds(1, -2, x, y) == true) {
+				tileMap[x][y].connectedTiles[increment] = tileMap[1 + x][-2 + y];
+
+			}
+
+		}
+	}
+}
+
+bool Board::CheckBounds(int xInc, int yInc, int x, int y)
+{
+
+	if ((xInc + x) >= 0 & (xInc + x) < xSize && (yInc + y) >= 0 & (yInc + y) < ySize) {
+
+		//printf("true \n");
+
+		return true;
+
+	}
+	else {
+
+		//printf("false \n");
+
+		return false;
+
+	}
+}
+
+void Board::DisplayBoard()
+{
+	for (size_t x = 0; x < xSize; x++)
+	{
+		for (size_t y = 0; y < ySize; y++)
+		{
+
+			cout << tileMap[x][y].connectedTiles.size();
+			if (y == ySize - 1) {
+				cout << "\n";
+			}
+		}
+	}
+}
+
