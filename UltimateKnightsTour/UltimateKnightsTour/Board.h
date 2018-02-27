@@ -2,7 +2,8 @@
 class Board
 {
 public:
-	Board();
+	Board(int x, int y);
 	~Board();
+	int xSize, ySize;
 };
 
