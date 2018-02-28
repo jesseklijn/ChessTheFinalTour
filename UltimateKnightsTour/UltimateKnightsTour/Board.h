@@ -11,6 +11,7 @@ public:
 	bool CheckBounds(int xInc, int yInc, int x, int y);
 	void DisplayBoard();
 	int xSize, ySize;
-	Tile **tileMap;
+	std::vector<std::vector<Tile>> tileMap;
+
 };
 
