@@ -137,7 +137,7 @@ void Board::CreateConnections()
 				increment++;
 			}
 			increment = 0;
-			
+
 #pragma endregion
 		}
 	}
@@ -165,15 +165,17 @@ bool Board::CheckBounds(int xInc, int yInc, int x, int y)
 
 void Board::DisplayBoard()
 {
+	//system("cls");
 	for (size_t x = 0; x < xSize; x++)
 	{
 		for (size_t y = 0; y < ySize; y++)
 		{
-
-			cout << tileMap[x][y].connectedTiles.size();
+			
+			cout << tileMap[x][y].hasBeenUsed;
 			if (y == ySize - 1) {
 				cout << "\n";
 			}
+			
 		}
 	}
 }

@@ -10,3 +10,8 @@ Tile::Tile()
 Tile::~Tile()
 {
 }
+
+void Tile::Use()
+{
+	hasBeenUsed = true;
+}
