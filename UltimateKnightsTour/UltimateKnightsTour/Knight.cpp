@@ -24,21 +24,28 @@ Knight::~Knight()
 
 void Knight::Move(Board board)
 {
-	board.DisplayBoard();
+
 	//Sleep(500);
 	if (checkIfWon(board.tileMap) == false) {
 		//Check based on current tile where to go next
 		Tile toMoveTo = Check(currentTile.connectedTiles, board.tileMap);
+		if (toMoveTo.x != -1 && toMoveTo.y != -1) {
+			
+			
 
 
+			//Assign the knight to a tile that was given from input
+			currentTile = toMoveTo;
 
-		//Assign the knight to a tile that was given from input
-		currentTile = toMoveTo;
-
-		//Has been stepped on by the knight
-		board.tileMap[currentTile.x][currentTile.y].Use();
-
-		Move(board);
+			//Has been stepped on by the knight
+			board.tileMap[currentTile.x][currentTile.y].Use();
+			board.DisplayBoard();
+			Move(board);
+		}
+		else {
+			//Backtrack 
+			printf("BACKTRACK \n");
+		}
 	}
 	else {
 		cout << "The knight has moved to all tiles once." << endl;
@@ -48,8 +55,7 @@ void Knight::Move(Board board)
 Tile Knight::Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap)
 {
 
-
-	cout << "Currenttile:" << "[" << currentTile.x << "/" << currentTile.y << "]" << endl;
+	//cout << "Currenttile:" << "[" << currentTile.x << "/" << currentTile.y << "]" << endl;
 
 
 	Tile winningCandidate;
@@ -57,11 +63,11 @@ Tile Knight::Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap)
 	int candidateSize = 0;
 	for (size_t x = 0; x < connectedTiles.size(); x++)
 	{
-		cout << "Current Candidate:" << "[" << tileMap[connectedTiles[x].x][connectedTiles[x].y].x << "/" << tileMap[connectedTiles[x].x][connectedTiles[x].y].y << "] " << tileMap[connectedTiles[x].x][connectedTiles[x].y].connectedTiles.size() << " [" << tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed << "]" << endl;
 		
 		if (tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed != true) {
-			
-			
+			//cout << "Current Candidate:" << "[" << tileMap[connectedTiles[x].x][connectedTiles[x].y].x << "/" << tileMap[connectedTiles[x].x][connectedTiles[x].y].y << "] " << tileMap[connectedTiles[x].x][connectedTiles[x].y].connectedTiles.size() << " [" << tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed << "]" << endl;
+
+
 			for (size_t i = 0; i < connectedTiles[x].connectedTiles.size(); i++)
 			{
 				if (tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed != true) {
@@ -69,19 +75,17 @@ Tile Knight::Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap)
 				}
 			}
 
-
-
 			if (winningCandidateSize > candidateSize) {
 				winningCandidate = tileMap[connectedTiles[x].x][connectedTiles[x].y];
 				winningCandidateSize = candidateSize;
-				
+
 			}
 			//Reset candidate size
 			candidateSize = 0;
-			
+
 		}
 	}
-	
+
 
 	/*
 	We want to return the cheapest tile from connectedTiles.size
@@ -100,9 +104,12 @@ Tile Knight::Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap)
 	*/
 
 
- 
+
 	if (winningCandidateSize != 9) {
-		cout << "Winner:" << "[" << tileMap[winningCandidate.x][winningCandidate.y].x << "/" << tileMap[winningCandidate.x][winningCandidate.y].y << "] " << tileMap[winningCandidate.x][winningCandidate.y].connectedTiles.size() << " [" << tileMap[winningCandidate.x][winningCandidate.y].hasBeenUsed << "]" << endl;
+		//cout << "Winner:" << "[" << tileMap[winningCandidate.x][winningCandidate.y].x << "/" << tileMap[winningCandidate.x][winningCandidate.y].y << "] " << tileMap[winningCandidate.x][winningCandidate.y].connectedTiles.size() << " [" << tileMap[winningCandidate.x][winningCandidate.y].hasBeenUsed << "]" << endl;
+	}
+	else {
+		
 	}
 	cout << endl;
 	return winningCandidate;

@@ -165,7 +165,7 @@ bool Board::CheckBounds(int xInc, int yInc, int x, int y)
 
 void Board::DisplayBoard()
 {
-	//system("cls");
+	system("cls");
 	for (size_t x = 0; x < xSize; x++)
 	{
 		for (size_t y = 0; y < ySize; y++)
