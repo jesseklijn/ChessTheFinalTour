@@ -15,3 +15,8 @@ void Tile::Use()
 {
 	hasBeenUsed = true;
 }
+
+void Tile::UnUse()
+{
+	hasBeenUsed = true;
+}

@@ -4,114 +4,90 @@
 #include "Board.h"
 #include "Windows.h"
 
-Knight::Knight(Tile startingTile)
+Knight::Knight()
 {
-	//Assign the knight to a tile that was given from input
-	currentTile = startingTile;
-
-
-
-
-
 
 }
 
 
 Knight::~Knight()
 {
-	//Fallback method
+	//Destructor
 }
 
-void Knight::Move(Board board)
+bool Knight::Move(Board board, Tile currentTile)
 {
-
-	//Sleep(500);
-	if (checkIfWon(board.tileMap) == false) {
-		//Check based on current tile where to go next
-		Tile toMoveTo = Check(currentTile.connectedTiles, board.tileMap);
-		if (toMoveTo.x != -1 && toMoveTo.y != -1) {
-			
-			
+	Sleep(50);
+	//Check if Knight has finished its tour (or not)
 
 
-			//Assign the knight to a tile that was given from input
-			currentTile = toMoveTo;
 
-			//Has been stepped on by the knight
-			board.tileMap[currentTile.x][currentTile.y].Use();
-			board.DisplayBoard();
-			Move(board);
-		}
-		else {
-			//Backtrack 
-			printf("BACKTRACK \n");
-		}
+	Tile toMoveTo = Check(board.tileMap[currentTile.x][currentTile.y].connectedTiles, board.tileMap);
+
+	//Has been stepped on by the knight
+	board.tileMap[currentTile.x][currentTile.y].Use();
+	//Update display
+	board.DisplayBoard();
+
+	if (checkIfWon(board.tileMap) == true) {
+		return true;
 	}
-	else {
-		cout << "The knight has moved to all tiles once." << endl;
-	}
+	//system("PAUSE");
+		for (size_t i = 0; i < toMoveTo.connectedTiles.size(); i++)
+		{
+			if (Move(board, toMoveTo) == true)
+			{
+				return true;
+			}
+			else {
+
+			}
+
+
+		}
+		board.tileMap[currentTile.x][currentTile.y].UnUse();
+		return false;
 }
 
 Tile Knight::Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap)
 {
 
-	//cout << "Currenttile:" << "[" << currentTile.x << "/" << currentTile.y << "]" << endl;
-
-
 	Tile winningCandidate;
+
 	int winningCandidateSize = 9; //8 is the highest, and so the worst, putting it to 9 makes it so that all candidates will win.
 	int candidateSize = 0;
+	//Get the winning tile
 	for (size_t x = 0; x < connectedTiles.size(); x++)
 	{
-		
+
 		if (tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed != true) {
-			//cout << "Current Candidate:" << "[" << tileMap[connectedTiles[x].x][connectedTiles[x].y].x << "/" << tileMap[connectedTiles[x].x][connectedTiles[x].y].y << "] " << tileMap[connectedTiles[x].x][connectedTiles[x].y].connectedTiles.size() << " [" << tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed << "]" << endl;
 
-
-			for (size_t i = 0; i < connectedTiles[x].connectedTiles.size(); i++)
+			for (size_t i = 0; i < tileMap[connectedTiles[x].x][connectedTiles[x].y].connectedTiles.size(); i++)
 			{
 				if (tileMap[connectedTiles[x].x][connectedTiles[x].y].hasBeenUsed != true) {
 					candidateSize++;
+
 				}
 			}
+
+
 
 			if (winningCandidateSize > candidateSize) {
 				winningCandidate = tileMap[connectedTiles[x].x][connectedTiles[x].y];
 				winningCandidateSize = candidateSize;
 
 			}
-			//Reset candidate size
-			candidateSize = 0;
 
+
+			cout << "Possible winner:" << "[" << tileMap[connectedTiles[x].x][connectedTiles[x].y].x << "/" << tileMap[connectedTiles[x].x][connectedTiles[x].y].y << "]" << candidateSize << endl;
 		}
+		candidateSize = 0;
 	}
 
 
-	/*
-	We want to return the cheapest tile from connectedTiles.size
-
-	For each tile in connectedTiles, we need to check for:
-
-	1. Has it been used? -> Yes?-Ignore,No?-Continue
-	2. If it has not been used check for all connections of the connection whether they have been used or not.
-	3. Create a new size with 0
-	4. Have they been used? Yes?-Don't add them to the new size,No?-Add 1 to the size of the candidate tile
-	5. All connections of the connection checked-> Is there an existing winning candidate?
-	6. No?-Step 8, Yes?-Step 7
-	7. Compare the winning candidates size > current candidate size
-	8. Assign the winning candidate to the current candidate and assign new winning candidate size
-
-	*/
+	cout << "Candidate:" << "[" << winningCandidate.x << "/" << winningCandidate.y << "]" << winningCandidateSize << endl;
 
 
-
-	if (winningCandidateSize != 9) {
-		//cout << "Winner:" << "[" << tileMap[winningCandidate.x][winningCandidate.y].x << "/" << tileMap[winningCandidate.x][winningCandidate.y].y << "] " << tileMap[winningCandidate.x][winningCandidate.y].connectedTiles.size() << " [" << tileMap[winningCandidate.x][winningCandidate.y].hasBeenUsed << "]" << endl;
-	}
-	else {
-		
-	}
-	cout << endl;
 	return winningCandidate;
 }
 

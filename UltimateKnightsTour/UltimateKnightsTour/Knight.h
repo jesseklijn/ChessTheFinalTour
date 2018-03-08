@@ -7,12 +7,10 @@ class Knight
 {
 public:
 
-	Tile currentTile;
-	Knight(Tile startingTile);
+	Knight();
 	~Knight();
-	void Move(Board board);
+	bool Move(Board board, Tile currentTile);
 	Tile Check(vector<Tile> connectedTiles, vector<vector<Tile>> tileMap);
 	bool checkIfWon(vector<vector<Tile>> tileMap);
-	std::vector<Tile> path;
 };
 

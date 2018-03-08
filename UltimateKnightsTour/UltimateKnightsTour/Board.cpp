@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Board.h"
 #include "Tile.h"
-#include <iostream>
-#include <algorithm> 
+#include <algorithm>
+#include <iostream> 
 using namespace std;
 
 
@@ -46,16 +46,14 @@ void Board::CreateConnections()
 	{
 		for (size_t y = 0; y < ySize; y++)
 		{
-			//Give tiles a position for debugging
+			//Give tiles a position
 			tileMap[x][y].x = x;
 			tileMap[x][y].y = y;
-
-			int options = 0;
 
 #pragma region Create amount 
 
 
-
+			int options = 0;
 			//Check for amount of connections
 			if (CheckBounds(-2, -1, x, y) == true) {
 				options++;
@@ -83,10 +81,9 @@ void Board::CreateConnections()
 				options++;
 			}
 #pragma endregion
+
 			//Initialize connections based on amount
 			tileMap[x][y].connectedTiles.resize(options);
-
-			options = 0;
 
 
 		}
@@ -98,11 +95,9 @@ void Board::CreateConnections()
 		for (size_t y = 0; y < ySize; y++)
 		{
 			//Create an increment to help assign connectedTiles 
-			int increment = 0;
-
 #pragma region Fill Tiles
 			//Fill connections with tiles
-
+			int increment = 0;
 			if (CheckBounds(-2, -1, x, y) == true) {
 				tileMap[x][y].connectedTiles[increment] = tileMap[-2 + x][-1 + y];
 				increment++;
@@ -115,7 +110,6 @@ void Board::CreateConnections()
 				tileMap[x][y].connectedTiles[increment] = tileMap[-1 + x][-2 + y];
 				increment++;
 			}
-
 			if (CheckBounds(-1, 2, x, y) == true) {
 				tileMap[x][y].connectedTiles[increment] = tileMap[-1 + x][2 + y];
 				increment++;
@@ -147,19 +141,12 @@ void Board::CreateConnections()
 bool Board::CheckBounds(int xInc, int yInc, int x, int y)
 {
 	//Check bounds of x and y within tilemap
-	if ((xInc + x) >= 0 & (xInc + x) < xSize && (yInc + y) >= 0 & (yInc + y) < ySize) {
-
-		//printf("true \n");
-
+	if ((xInc + x) >= 0 & (xInc + x) < xSize
+		&& (yInc + y) >= 0 & (yInc + y) < ySize) {
 		return true;
-
 	}
 	else {
-
-		//printf("false \n");
-
 		return false;
-
 	}
 }
 
@@ -170,12 +157,12 @@ void Board::DisplayBoard()
 	{
 		for (size_t y = 0; y < ySize; y++)
 		{
-			
+
 			cout << tileMap[x][y].hasBeenUsed;
 			if (y == ySize - 1) {
 				cout << "\n";
 			}
-			
+
 		}
 	}
 }

@@ -10,7 +10,6 @@ public:
 	void CreateConnections();
 	bool CheckBounds(int xInc, int yInc, int x, int y);
 	void DisplayBoard();
-	
 	int xSize, ySize;
 	std::vector<std::vector<Tile>> tileMap;
 
